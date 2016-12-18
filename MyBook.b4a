@@ -1,0 +1,173 @@
+﻿Version=6.3
+NumberOfModules=12
+Module1=SlideMenu
+Module2=Ams
+Module3=B
+Module4=Thaya
+Module5=Atat
+Module6=Atat1
+Module7=Atat2
+Module8=Atat3
+Module9=Atat4
+Module10=Atat5
+Module11=Atat6
+Module12=Atat7
+Build1=Default,com.htetznaing.basickorean
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: http://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="19"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~'SetApplicationAttribute(android:theme, "@android:style/Theme.Holo.Light")~\n~'End of default text.~\n~'AdMob~\n~AddApplicationText(~\n~<meta-data android:name="com.google.android.gms.version"~\n~  android:value="@integer/google_play_services_version"/>~\n~<activity android:name="com.google.android.gms.ads.AdActivity"~\n~  android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>~\n~)~\n~'End of AdMob
+IconFile=
+NumberOfFiles=14
+File1=2.png
+File2=AmarSar.txt
+File3=atat.txt
+File4=atat1.txt
+File5=atat2.txt
+File6=Atat3.txt
+File7=atat4.txt
+File8=atat5.txt
+File9=atat6.txt
+File10=atat7.txt
+File11=b.txt
+File12=icon.png
+File13=menu.png
+File14=thaya.txt
+NumberOfLibraries=5
+Library1=core
+Library2=animation
+Library3=phone
+Library4=mwadmobinterstitial2 (2)
+Library5=admob
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: Basic 한국어
+	#VersionCode: 1
+	#VersionName: 1.0
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: unspecified
+	#CanInstallToExternalStorage: False
+	#AdditionalRes: D:\Android\android-sdk\extras\google\google-play-services\libproject\google-play-services_lib\res, com.google.android.gms
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: False
+	#IncludeTitle: True
+	
+#End Region
+
+Sub Process_Globals
+dim t as Timer
+End Sub
+
+Sub Globals
+Dim sm As SlideMenu
+Dim bg As ColorDrawable
+Dim sc As ScrollView
+Dim lb As Label
+Dim Banner As AdView
+Dim Interstitial As mwAdmobInterstitial
+Dim p As Phone
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+bg.Initialize(Colors.RGB(250,250,250),1)
+Activity.Background = bg
+
+lb.Initialize("")
+lb.TextColor = Colors.Black
+lb.Text = File.ReadString(File.DirAssets,"amarsar.txt")
+sc.Initialize(1000dip)
+Activity.AddView(sc,0%x,0%y,100%x,100%y)
+sc.Panel.AddView(lb,1%x,1%y,98%x,100%y)
+sc.Height = 900dip
+
+ Activity.AddMenuItem3("Menu List","menu",LoadBitmap(File.DirAssets,"menu.png"),True)
+Activity.Title = "Basic 한국어"
+sm.Initialize(Activity, Me, "SlideMenu",0,70%x)
+sm.AddItem("အမွာစာ",LoadBitmap(File.DirAssets,"2.png"),1)
+sm.AddItem("ဗ်ည္း",LoadBitmap(File.DirAssets,"2.png"),2)
+sm.AddItem("သရ",LoadBitmap(File.DirAssets,"2.png"),3)
+sm.AddItem("အသတ္မ်ား",LoadBitmap(File.DirAssets,"2.png"),4)
+sm.AddItem("ㄱ အသတ္",LoadBitmap(File.DirAssets,"2.png"),5)
+sm.AddItem("ㄴအသတ္",LoadBitmap(File.DirAssets,"2.png"),6)
+sm.AddItem("ㄷ အသတ္",LoadBitmap(File.DirAssets,"2.png"),7)
+sm.AddItem("ㄹအသတ္",LoadBitmap(File.DirAssets,"2.png"),8)
+sm.AddItem("ㅁ အသတ္",LoadBitmap(File.DirAssets,"2.png"),9)
+sm.AddItem("ㅂ အသတ္",LoadBitmap(File.DirAssets,"2.png"),10)
+sm.AddItem("ㅇ အသတ္",LoadBitmap(File.DirAssets,"2.png"),11)
+
+p.SetScreenOrientation(1)
+	If p.SdkVersion > 19 Then
+		Banner.Initialize("Banner","ca-app-pub-4173348573252986/9432437755")
+		Banner.LoadAd
+		Activity.AddView(Banner,0%x,90%y,100%x,50dip)
+			
+			Interstitial.Initialize("Interstitial","ca-app-pub-4173348573252986/9153236156")
+			Interstitial.LoadAd
+			
+			t.Initialize("t",120000)
+			t.Enabled = True
+	End If
+	
+End Sub
+
+Sub t_Tick
+	If Interstitial.Status = Interstitial.Status_AdReadyToShow Then
+		Interstitial.Show
+	End If
+	If Interstitial.Status = Interstitial.Status_Dismissed Then
+		Interstitial.LoadAd
+	End If
+End Sub
+
+Sub Activity_Resume
+ If sm.isVisible = True Then sm.Hide
+End Sub
+
+
+Sub Activity_KeyPress (KeyCode As Int) As Boolean
+	If KeyCode = KeyCodes.KEYCODE_BACK Then
+	 If  sm.isVisible Then
+		 sm.Hide
+		Return True
+			Else
+	    Dim mess As String = "Do you want to Exit ?"
+		Dim abc As Int =  Msgbox2(mess,"Attention!","Yes","","No",Null)
+	If abc = DialogResponse.POSITIVE Then
+	      Return False
+		  Else
+		  Return True
+		 End If
+		 End If
+	End If
+End Sub
+
+Sub SlideMenu_Click(Item As Object)
+sm.Hide
+	Select Item
+	   Case 1 :
+	    StartActivity(Ams)
+		Case 2 :
+			StartActivity(B)
+			Case 3 :
+				StartActivity(Thaya)
+				Case 4 :
+					StartActivity(Atat)
+					Case 5 :
+						StartActivity(Atat1)
+						Case 6 :
+							StartActivity(Atat2)
+							Case 7 :
+								StartActivity(Atat3)
+								Case 8 :
+									StartActivity(Atat4)
+									Case 9 :
+										StartActivity(Atat5)
+										Case 10 :
+											StartActivity(Atat6)
+											Case 11 :
+												StartActivity(Atat7)
+	End Select
+End Sub
+
+Sub menu_Click
+		If sm.isVisible Then sm.Hide Else sm.Show
+End Sub
