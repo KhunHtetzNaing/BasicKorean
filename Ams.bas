@@ -1,5 +1,5 @@
 ﻿Type=Activity
-Version=6.3
+Version=6.5
 ModulesStructureVersion=1
 B4A=true
 @EndOfDesignText@
@@ -20,7 +20,7 @@ Dim tx As Label
 Dim bg As ColorDrawable
 Dim Banner As AdView
 Dim p As Phone
-Dim Interstitial As mwAdmobInterstitial
+Dim Interstitial As InterstitialAd
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -36,28 +36,22 @@ Activity.AddView(sc,0%x,0%y,100%x,100%y)
 sc.Panel.AddView(tx,1%x,1%y,98%x,100%y)
 sc.Height = 900dip
 
-p.SetScreenOrientation(1)
-	If p.SdkVersion > 19 Then
-		Banner.Initialize("Banner","ca-app-pub-4173348573252986/9432437755")
-		Banner.LoadAd
-		Activity.AddView(Banner,0%x,90%y,100%x,50dip)
+	p.SetScreenOrientation(1)
+	Banner.Initialize("Banner","ca-app-pub-4173348573252986/4342648557")
+	Banner.LoadAd
+	Activity.AddView(Banner,0%x,100%y - 50dip,100%x,50dip)
+	Log(Banner)
 			
-			Interstitial.Initialize("Interstitial","ca-app-pub-4173348573252986/9153236156")
-			Interstitial.LoadAd
+	Interstitial.Initialize("Interstitial","ca-app-pub-4173348573252986/8354045753")
+	Interstitial.LoadAd
 			
-			t.Initialize("t",120000)
-			t.Enabled = True
-	End If
+	t.Initialize("t",30000)
+	t.Enabled = True
 	
 End Sub
 
 Sub t_Tick
-	If Interstitial.Status = Interstitial.Status_AdReadyToShow Then
-		Interstitial.Show
-	End If
-	If Interstitial.Status = Interstitial.Status_Dismissed Then
-		Interstitial.LoadAd
-	End If
+	If Interstitial.Ready Then Interstitial.Show Else Interstitial.LoadAd
 End Sub
 
 Sub Activity_Resume

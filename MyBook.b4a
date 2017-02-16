@@ -1,4 +1,4 @@
-﻿Version=6.3
+﻿Version=6.5
 NumberOfModules=12
 Module1=SlideMenu
 Module2=Ams
@@ -12,10 +12,10 @@ Module9=Atat4
 Module10=Atat5
 Module11=Atat6
 Module12=Atat7
-Build1=Default,com.htetznaing.basickorean
-ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: http://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="19"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~'SetApplicationAttribute(android:theme, "@android:style/Theme.Holo.Light")~\n~'End of default text.~\n~'AdMob~\n~AddApplicationText(~\n~<meta-data android:name="com.google.android.gms.version"~\n~  android:value="@integer/google_play_services_version"/>~\n~<activity android:name="com.google.android.gms.ads.AdActivity"~\n~  android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>~\n~)~\n~'End of AdMob
+Build1=Default,com.htetznaing.basickoreannew
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: http://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="19"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~'SetApplicationAttribute(android:theme, "@android:style/Theme.Holo.Light")~\n~'End of default text.~\n~~\n~~\n~'************ Google Play Services Base ************~\n~AddApplicationText(~\n~   <activity android:name="com.google.android.gms.common.api.GoogleApiActivity"~\n~  android:theme="@android:style/Theme.Translucent.NoTitleBar"~\n~  android:exported="false"/>~\n~    <meta-data~\n~  android:name="com.google.android.gms.version"~\n~  android:value="@integer/google_play_services_version" />~\n~)~\n~'************ Google Play Services Base (end) ************~\n~~\n~'************ Firebase Ads ************~\n~AddApplicationText(~\n~  <activity~\n~  android:name="com.google.android.gms.ads.AdActivity"~\n~  android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"~\n~  android:theme="@android:style/Theme.Translucent" />~\n~  <activity android:name="com.google.android.gms.ads.purchase.InAppPurchaseActivity"~\n~  android:theme="@style/Theme.IAPTheme"/>~\n~)~\n~'************ Firebase Ads (end) ************
 IconFile=
-NumberOfFiles=14
+NumberOfFiles=15
 File1=2.png
 File2=AmarSar.txt
 File3=atat.txt
@@ -27,24 +27,23 @@ File8=atat5.txt
 File9=atat6.txt
 File10=atat7.txt
 File11=b.txt
-File12=icon.png
-File13=menu.png
-File14=thaya.txt
-NumberOfLibraries=5
+File12=fb.png
+File13=icon.png
+File14=menu.png
+File15=thaya.txt
+NumberOfLibraries=4
 Library1=core
 Library2=animation
 Library3=phone
-Library4=mwadmobinterstitial2 (2)
-Library5=admob
+Library4=firebaseadmob
 @EndOfDesignText@
 #Region  Project Attributes 
-	#ApplicationLabel: Basic 한국어
+	#ApplicationLabel: Basic Korean
 	#VersionCode: 1
 	#VersionName: 1.0
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
 	#SupportedOrientations: unspecified
 	#CanInstallToExternalStorage: False
-	#AdditionalRes: D:\Android\android-sdk\extras\google\google-play-services\libproject\google-play-services_lib\res, com.google.android.gms
 #End Region
 
 #Region  Activity Attributes 
@@ -54,7 +53,7 @@ Library5=admob
 #End Region
 
 Sub Process_Globals
-dim t as Timer
+Dim t As Timer
 End Sub
 
 Sub Globals
@@ -63,7 +62,7 @@ Dim bg As ColorDrawable
 Dim sc As ScrollView
 Dim lb As Label
 Dim Banner As AdView
-Dim Interstitial As mwAdmobInterstitial
+Dim Interstitial As InterstitialAd
 Dim p As Phone
 End Sub
 
@@ -95,48 +94,54 @@ sm.AddItem("ㅂ အသတ္",LoadBitmap(File.DirAssets,"2.png"),10)
 sm.AddItem("ㅇ အသတ္",LoadBitmap(File.DirAssets,"2.png"),11)
 
 p.SetScreenOrientation(1)
-	If p.SdkVersion > 19 Then
-		Banner.Initialize("Banner","ca-app-pub-4173348573252986/9432437755")
-		Banner.LoadAd
-		Activity.AddView(Banner,0%x,90%y,100%x,50dip)
+	Banner.Initialize("Banner","ca-app-pub-4173348573252986/4342648557")
+	Banner.LoadAd
+	Activity.AddView(Banner,0%x,100%y - 50dip,100%x,50dip)
+	Log(Banner)
 			
-			Interstitial.Initialize("Interstitial","ca-app-pub-4173348573252986/9153236156")
-			Interstitial.LoadAd
+	Interstitial.Initialize("Interstitial","ca-app-pub-4173348573252986/8354045753")
+	Interstitial.LoadAd
 			
-			t.Initialize("t",120000)
+			t.Initialize("t",30000)
 			t.Enabled = True
-	End If
 	
 End Sub
 
 Sub t_Tick
-	If Interstitial.Status = Interstitial.Status_AdReadyToShow Then
-		Interstitial.Show
-	End If
-	If Interstitial.Status = Interstitial.Status_Dismissed Then
-		Interstitial.LoadAd
-	End If
+If Interstitial.Ready Then Interstitial.Show Else Interstitial.LoadAd
 End Sub
 
 Sub Activity_Resume
- If sm.isVisible = True Then sm.Hide
+	If sm.isVisible = True Then sm.Hide
 End Sub
 
 
+
 Sub Activity_KeyPress (KeyCode As Int) As Boolean
+	Dim Answ As Int
 	If KeyCode = KeyCodes.KEYCODE_BACK Then
-	 If  sm.isVisible Then
-		 sm.Hide
-		Return True
-			Else
-	    Dim mess As String = "Do you want to Exit ?"
-		Dim abc As Int =  Msgbox2(mess,"Attention!","Yes","","No",Null)
-	If abc = DialogResponse.POSITIVE Then
-	      Return False
-		  Else
-		  Return True
-		 End If
-		 End If
+		Answ = Msgbox2("If you want to get new updates on  Facebook? Please Like " &CRLF & "Myanmar Android Apps Page!","Attention!", "Yes", "", "No",LoadBitmap(File.DirAssets,"fb.png" ))
+		If Answ = DialogResponse.NEGATIVE Then
+			Return False
+		End If
+	End If
+	If Answ = DialogResponse.POSITIVE Then
+		Try
+ 
+			Dim Facebook As Intent
+ 
+			Facebook.Initialize(Facebook.ACTION_VIEW, "fb://page/627699334104477")
+			StartActivity(Facebook)
+ 
+		Catch
+ 
+			Dim i As Intent
+			i.Initialize(i.ACTION_VIEW, "https://m.facebook.com/MmFreeAndroidApps")
+ 
+			StartActivity(i)
+ 
+		End Try
+		Return False
 	End If
 End Sub
 
